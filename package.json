@@ -1,0 +1,45 @@
+{
+  "name": "unityt-bot",
+  "version": "0.0.1",
+  "description": "Unity bot on mattermost",
+  "repository": {
+    "url": "https://github.com/SurionA/unity-bot.git"
+  },
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "NODE_ENV=development nodemon --experimental-modules -w src ",
+    "clean": "rimraf bin disr && mkdir bin",
+    "bundle": "webpack src/index.js --output dist/bundle.min.js --mode production --target node",
+    "bin": "npm run clean  && npm run bundle && nexe dist/bundle.min.js -t alpine-x64-10.11.0 -o bin/unity",
+    "lint": "eslint src"
+  },
+  "author": "SurionA <frere.maxime@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "argparse": "~1.0.10",
+    "axios": "~0.19.0",
+    "dotenv": "~8.1.0",
+    "line-reader": "^0.4.0",
+    "node-fetch": "~2.3.0"
+  },
+  "devDependencies": {
+    "eslint": "~6.5.1",
+    "eslint-config-airbnb": "~18.0.1",
+    "eslint-config-prettier": "~6.4.0",
+    "eslint-plugin-flowtype": "~4.3.0",
+    "eslint-plugin-import": "~2.18.2",
+    "eslint-plugin-jest": "~22.19.0",
+    "eslint-plugin-jsx-a11y": "~6.2.3",
+    "eslint-plugin-prettier": "~3.1.1",
+    "eslint-plugin-react": "~7.16.0",
+    "jest": "~24.9.0",
+    "jest-fetch-mock": "~2.1.2",
+    "nexe": "~3.3.2",
+    "nodemon": "~1.19.3",
+    "prettier": "~1.18.2",
+    "rimraf": "~3.0.0",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.3.10"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "plugins": ["prettier", "import", "jest"],
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "module"
+  },
+  "env": {
+    "node": true,
+    "jest": true
+  },
+  "extends": ["airbnb", "prettier"],
+  "rules": {
+    "import/extensions": "off",
+    "import/no-unresolved": "off",
+    "no-use-before-define": 0,
+    "newline-after-var": 2,
+    "template-curly-spacing": 0,
+    "no-underscore-dangle": [
+      0,
+      {
+        "allowAfterThis": true
+      }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "trailingComma": "es5",
+        "singleQuote": true,
+        "printWidth": 120
+      }
+    ]
+  }
+}
