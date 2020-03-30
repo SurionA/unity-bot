@@ -20,5 +20,3 @@ COPY --from=build-deps /srv/scripts/bin/unity /srv/scripts/bin/unity
 ENV BOT_USERNAME=Unity
 ENV BOT_AVATAR_URL=https://raw.githubusercontent.com/SurionA/unity-bot/master/src/assets/unity.jpg
 ENV PATH="$PATH:/srv/scripts/bin"
-
-ENTRYPOINT ["unity"]

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import fs from 'fs';
+import os from 'os';
 
 const _createClient = (baseURL, accessToken) =>
 axios.create({
@@ -26,10 +27,7 @@ export function botClient(baseURL, accessToken, channelId) {
       message,
     });
 
-    // IMPORTANT console.log. Allow to stdout the post ID and set env variable in CI
-    console.log(response.data.id);
-
-fs.appendFile('.unity-config', `MATTERMOST_PARENT_POST_ID=${response.data.id}`, function (err) {
+fs.appendFile('.unity-config', `${os.EOL}MATTERMOST_PARENT_POST_ID=${response.data.id}`, function (err) {
   if (err) return console.log(err);
 });
 

@@ -6,7 +6,6 @@ dotenv.config();
 function releaseStartRequirement() {
   if (
     [
-      process.env.NODE_ENV === 'CI',
       process.env.CI_PROJECT_NAME,
       process.env.CI_PROJECT_URL,
       process.env.GITLAB_USER_NAME,
