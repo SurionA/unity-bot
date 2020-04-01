@@ -7,7 +7,7 @@ import publishChangelog from './commands/publishChangelog.js';
 import releaseEnd from './commands/releaseEnd.js';
 import { postPrepaDemo } from './commands/prepareDemo.js';
 
-const sanitazePath = [process.env.CONFIG_PATH || process.env.CI_PROJECT_DIR, '.unity-config'].filter(Boolean);
+const sanitazePath = [process.cwd(), '.unity-config'].filter(Boolean);
 
 try {
   dotenv.config({ path: path.resolve.apply(null, sanitazePath) });
