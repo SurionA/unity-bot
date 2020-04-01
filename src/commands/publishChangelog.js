@@ -27,7 +27,7 @@ export default function post({ mattermostChannel, mattermostIncomingWebhookUrl }
     },
     err => {
       if (err) {
-        console.error('err');
+        console.error(err);
         return;
       }
 
