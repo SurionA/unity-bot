@@ -10,7 +10,7 @@ function releaseStartRequirement() {
       process.env.CI_PROJECT_URL,
       process.env.GITLAB_USER_NAME,
       process.env.CI_COMMIT_TITLE,
-    ].every(env => !!env)
+    ].every((env) => !!env)
   ) {
     return true;
   }
@@ -26,6 +26,6 @@ export default function releaseStart({ mattermostChannel, mattermostUrl, matterm
 
     postMessage(
       `@here ${process.env.GITLAB_USER_NAME} est en train de MEP sur [${process.env.CI_PROJECT_NAME}](${process.env.CI_PROJECT_URL}) - ${process.env.CI_COMMIT_TITLE}`
-    ).catch(err => console.log('err', err));
+    ).catch((err) => console.log(err));
   }
 }

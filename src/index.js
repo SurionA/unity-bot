@@ -1,13 +1,16 @@
 import dotenv from 'dotenv';
 import argparse from 'argparse';
+import path from 'path';
 
 import releaseStart from './commands/releaseStart.js';
 import publishChangelog from './commands/publishChangelog.js';
 import releaseEnd from './commands/releaseEnd.js';
 import { postPrepaDemo } from './commands/prepareDemo.js';
 
+const sanitazePath = [process.cwd(), '.unity-config'].filter(Boolean);
+
 try {
-  dotenv.config({ path: '.unity-config' });
+  dotenv.config({ path: path.resolve.apply(null, sanitazePath) });
 
   const { ArgumentParser } = argparse;
   const parser = new ArgumentParser({
@@ -24,7 +27,7 @@ try {
   const releaseStartSubparser = subparsers.addParser('release-start', { addHelp: true });
   const releaseEndSubparser = subparsers.addParser('release-end', { addHelp: true });
 
-  [releaseStartSubparser, releaseEndSubparser].forEach(subparser => {
+  [releaseStartSubparser, releaseEndSubparser].forEach((subparser) => {
     subparser.addArgument(['-c', '--mattermost-channel'], {
       help: 'Mattermost channel ID to post the message',
       dest: 'mattermostChannel',
@@ -78,7 +81,7 @@ try {
     defaultValue: process.env.PREPA_DEMO_MATTERMOST_CHANNEL_ID,
   });
 
-  [releaseStartSubparser, releaseEndSubparser, publishChangelogSubparser, prepaDemoSubparser].forEach(subparser => {
+  [releaseStartSubparser, releaseEndSubparser, publishChangelogSubparser, prepaDemoSubparser].forEach((subparser) => {
     subparser.addArgument(['-u', '--mattermost-url'], {
       help: 'Mattermost server url',
       dest: 'mattermostUrl',

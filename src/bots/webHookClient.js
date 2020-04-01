@@ -27,9 +27,6 @@ export function botClient(baseURL, channelId) {
       attachments
     });
 
-    // IMPORTANT console.log. Allow to stdout the post ID and set env variable in CI
-    console.log(response);
-
     return response.data;
   }
 

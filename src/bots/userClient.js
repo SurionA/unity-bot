@@ -1,6 +1,7 @@
 import axios from 'axios';
 import fs from 'fs';
 import os from 'os';
+import path from 'path';
 
 const _createClient = (baseURL, accessToken) =>
 axios.create({
@@ -27,9 +28,12 @@ export function botClient(baseURL, accessToken, channelId) {
       message,
     });
 
-fs.appendFile('.unity-config', `${os.EOL}MATTERMOST_PARENT_POST_ID=${response.data.id}`, function (err) {
-  if (err) return console.log(err);
-});
+    const sanitazePath = [process.cwd(), '.unity-config'].filter(Boolean);
+
+
+    fs.appendFile(path.resolve.apply(null, sanitazePath) , `${os.EOL}MATTERMOST_PARENT_POST_ID=${response.data.id}`, function (err) {
+      if (err) return console.log(err);
+    });
 
     return response.data;
   }
