@@ -48,7 +48,7 @@ fragment IssueFrag on Issue {
 `;
 }
 
-export async function getSprintIssues({gitlabAccessToken, gitlabUrl, ...queryParams}) {
+export async function getSprintIssues({ gitlabAccessToken, gitlabUrl, ...queryParams }) {
   const res = await fetch(`${gitlabUrl}/api/graphql`, {
     credentials: 'include',
     headers: {
@@ -89,9 +89,16 @@ function getIssuesTemplate({ issues, url, type, total }) {
   }, `**Stories ${type} - ${issues.length}/${total}**`);
 }
 
-export async function postPrepaDemo({ gitlabUrl, mattermostChannel, mattermostUrl, mattermostAccessToken, demoType, ...queryParams }) {
+export async function postPrepaDemo({
+  gitlabUrl,
+  mattermostChannel,
+  mattermostUrl,
+  mattermostAccessToken,
+  demoType,
+  ...queryParams
+}) {
   const { postMessage } = botClient(mattermostUrl, mattermostAccessToken, mattermostChannel);
-  const data = await getSprintIssues({demoType, gitlabUrl,...queryParams});
+  const data = await getSprintIssues({ demoType, gitlabUrl, ...queryParams });
 
   const message = Object.values(data).reduce((acc, project) => {
     const { fullPath, issuesClosed, issuesDoing, issuesReview, issuesToMep } = project;

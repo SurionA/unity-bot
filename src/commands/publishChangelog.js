@@ -11,13 +11,14 @@ const readLineByLine = promisify(lineReader.eachLine);
 
 export default function post({ mattermostChannel, mattermostIncomingWebhookUrl }) {
   const { postMessage } = botClient(mattermostIncomingWebhookUrl, mattermostChannel);
+
   let countLine = 0;
   const changelog = [];
   const sanitazePath = [process.cwd(), 'CHANGELOG.md'].filter(Boolean);
 
   readLineByLine(
     path.resolve.apply(null, sanitazePath),
-    (line) => {
+    line => {
       countLine += 1;
       if (countLine > 7 && line.indexOf('/compare/') > -1) {
         return false;
@@ -26,7 +27,7 @@ export default function post({ mattermostChannel, mattermostIncomingWebhookUrl }
 
       return true;
     },
-    (err) => {
+    err => {
       if (err) {
         console.error(err);
         return;
@@ -50,7 +51,7 @@ export default function post({ mattermostChannel, mattermostIncomingWebhookUrl }
         },
       ];
 
-      postMessage(null, attachments).catch((error) => console.error(error));
+      postMessage(null, attachments).catch(error => console.error(error));
     }
   );
 }

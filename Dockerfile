@@ -1,4 +1,4 @@
-FROM node:12-alpine as build-deps
+FROM node:15-alpine as build-deps
 
 WORKDIR /srv/scripts
 
