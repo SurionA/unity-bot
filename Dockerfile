@@ -1,4 +1,4 @@
-FROM node:12-alpine as build-deps
+FROM node:15-alpine as build-deps
 
 WORKDIR /srv/scripts
 
@@ -19,6 +19,5 @@ COPY --from=build-deps /srv/scripts/bin/unity /srv/scripts/bin/unity
 
 ENV BOT_USERNAME=Unity
 ENV BOT_AVATAR_URL=https://raw.githubusercontent.com/SurionA/unity-bot/master/src/assets/unity.jpg
+ENV PROJECT_WORKDIR=/srv/app
 ENV PATH="$PATH:/srv/scripts/bin"
-
-ENTRYPOINT ["unity"]

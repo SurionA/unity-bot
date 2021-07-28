@@ -1,116 +1,123 @@
 import dotenv from 'dotenv';
 import argparse from 'argparse';
+import path from 'path';
 
 import releaseStart from './commands/releaseStart.js';
 import publishChangelog from './commands/publishChangelog.js';
 import releaseEnd from './commands/releaseEnd.js';
 import { postPrepaDemo } from './commands/prepareDemo.js';
 
+import packageJson from '../package.json';
+
+const sanitazePath = [process.cwd(), '.unity-config'].filter(Boolean);
+const { version } = packageJson;
+
 try {
-  dotenv.config({ path: '.unity-config' });
+  dotenv.config({ path: path.resolve.apply(null, sanitazePath) });
 
   const { ArgumentParser } = argparse;
   const parser = new ArgumentParser({
-    version: '0.0.1',
-    addHelp: true,
+    add_help: true,
     description: 'Argparse example',
   });
 
-  const subparsers = parser.addSubparsers({
+  parser.add_argument('-v', '--version', { action: 'version', version });
+
+  const subparsers = parser.add_subparsers({
     title: 'subcommands',
     dest: 'subcommand_name',
   });
 
-  const releaseStartSubparser = subparsers.addParser('release-start', { addHelp: true });
-  const releaseEndSubparser = subparsers.addParser('release-end', { addHelp: true });
+  const releaseStartSubparser = subparsers.add_parser('release-start', { add_help: true });
+  const releaseEndSubparser = subparsers.add_parser('release-end', { add_help: true });
 
   [releaseStartSubparser, releaseEndSubparser].forEach(subparser => {
-    subparser.addArgument(['-c', '--mattermost-channel'], {
+    subparser.add_argument('-c', '--mattermost-channel', {
       help: 'Mattermost channel ID to post the message',
       dest: 'mattermostChannel',
-      defaultValue: process.env.RELEASE_MATTERMOST_CHANNEL_ID,
+      default: process.env.RELEASE_MATTERMOST_CHANNEL_ID,
     });
   });
 
-  releaseEndSubparser.addArgument(['-p', '--mattermost-parent-post-id'], {
+  releaseEndSubparser.add_argument('-p', '--mattermost-parent-post-id', {
     help: 'Mattermost parent post ID for reply to a post',
     dest: 'mattermostParentPostId',
-    defaultValue: process.env.MATTERMOST_PARENT_POST_ID,
+    default: process.env.MATTERMOST_PARENT_POST_ID,
   });
 
-  const publishChangelogSubparser = subparsers.addParser('publish-changelog', { addHelp: true });
+  const publishChangelogSubparser = subparsers.add_parser('publish-changelog', { add_help: true });
 
-  publishChangelogSubparser.addArgument(['-c', '--mattermost-channel'], {
+  publishChangelogSubparser.add_argument('-c', '--mattermost-channel', {
     help: 'Mattermost channel ID to post the message',
     dest: 'mattermostChannel',
-    defaultValue: process.env.PUBLISH_CHANGELOG_MATTERMOST_CHANNEL_ID,
+    default: process.env.PUBLISH_CHANGELOG_MATTERMOST_CHANNEL_ID,
   });
 
-  const prepaDemoSubparser = subparsers.addParser('prepare-demo', { addHelp: true });
+  const prepaDemoSubparser = subparsers.add_parser('prepare-demo', { add_help: true });
 
-  prepaDemoSubparser.addArgument(['-t', '--demo-type'], {
+  prepaDemoSubparser.add_argument('-t', '--demo-type', {
     help: 'Label gitlab qui type les stories',
     dest: 'demoType',
-    defaultValue: process.env.DEMO_TYPE,
+    default: process.env.DEMO_TYPE,
   });
 
-  prepaDemoSubparser.addArgument(['-s', '--sprint-start'], {
+  prepaDemoSubparser.add_argument('-s', '--sprint-start', {
     help: 'Date de début de sprint au format YYYY-MM-DD',
     dest: 'sprintStart',
-    defaultValue: process.env.SPRINT_START,
+    default: process.env.SPRINT_START,
   });
 
-  prepaDemoSubparser.addArgument(['-e', '--sprint-end'], {
+  prepaDemoSubparser.add_argument('-e', '--sprint-end', {
     help: 'Date de fin de sprint au format YYYY-MM-DD',
     dest: 'sprintEnd',
-    defaultValue: process.env.SPRINT_END,
+    default: process.env.SPRINT_END,
   });
 
-  prepaDemoSubparser.addArgument(['-f', '--gitlab-project-full-path'], {
+  prepaDemoSubparser.add_argument('-f', '--gitlab-project-full-path', {
     help: 'Full path du projet gitlab',
     dest: 'gitlabProjectFullPath',
-    defaultValue: process.env.GITLAB_PROJECT_FULLPATH,
+    default: process.env.GITLAB_PROJECT_FULLPATH,
   });
 
-  prepaDemoSubparser.addArgument(['-c', '--mattermost-channel'], {
+  prepaDemoSubparser.add_argument('-c', '--mattermost-channel', {
     help: 'Mattermost channel ID to post the message',
     dest: 'mattermostChannel',
-    defaultValue: process.env.PREPA_DEMO_MATTERMOST_CHANNEL_ID,
+    default: process.env.PREPA_DEMO_MATTERMOST_CHANNEL_ID,
   });
 
   [releaseStartSubparser, releaseEndSubparser, publishChangelogSubparser, prepaDemoSubparser].forEach(subparser => {
-    subparser.addArgument(['-u', '--mattermost-url'], {
+    subparser.add_argument('-u', '--mattermost-url', {
       help: 'Mattermost server url',
       dest: 'mattermostUrl',
-      defaultValue: process.env.MATTERMOST_BASE_URL,
+      default: process.env.MATTERMOST_BASE_URL,
     });
 
-    subparser.addArgument(['-w', '--mattermost-webhook-url'], {
+    subparser.add_argument('-w', '--mattermost-webhook-url', {
       help: 'Mattermost incoming webhook url',
       dest: 'mattermostIncomingWebhookUrl',
-      defaultValue: process.env.MATTERMOST_INCOMING_WEBHOOK_URL,
+      default: process.env.MATTERMOST_INCOMING_WEBHOOK_URL,
     });
 
-    subparser.addArgument(['-a', '--mattermost-access-token'], {
+    subparser.add_argument('-a', '--mattermost-access-token', {
       help: 'Mattermost access token',
       dest: 'mattermostAccessToken',
-      defaultValue: process.env.MATTERMOST_ACCESS_TOKEN,
+      default: process.env.MATTERMOST_ACCESS_TOKEN,
     });
 
-    subparser.addArgument(['-l', '--gitlabt-access-token'], {
+    subparser.add_argument('-l', '--gitlabt-access-token', {
       help: 'Gitlab access token',
       dest: 'gitlabAccessToken',
-      defaultValue: process.env.GITLAB_ACCESS_TOKEN,
+      default: process.env.GITLAB_ACCESS_TOKEN,
     });
 
-    subparser.addArgument(['-g', '--gitlab-url'], {
+    subparser.add_argument('-g', '--gitlab-url', {
       help: 'Gitlab url',
       dest: 'gitlabUrl',
-      defaultValue: process.env.GITLAB_URL,
+      default: process.env.GITLAB_URL,
     });
   });
 
-  const args = parser.parseArgs();
+  const args = parser.parse_args();
 
   switch (args.subcommand_name) {
     case 'release-start':
